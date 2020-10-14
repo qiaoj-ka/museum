@@ -9,6 +9,7 @@ import com.fehead.service.IRelicsService;
 import com.fehead.model.RelicsModel;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,6 +42,8 @@ public class RelicsController extends BaseController{
     @Autowired
     IRelicsService relicsService;
 
+    @Resource
+    RedisTemplate<Integer,RelicsModel> redisTemplate;
     /**
      * 首页搜索，按照字段获取列表
      * @return
@@ -60,7 +64,10 @@ public class RelicsController extends BaseController{
     @ApiOperation("根据id查找相应文物信息")
     @ApiImplicitParam(name = "id",value = "这里的id指列表中返回的索引id，不是文物id")
     public CommonReturnType selectRelicsInfo(Integer id) throws BusinessException {
-        RelicsModel relicsModel;
+        RelicsModel relicsModel=redisTemplate.opsForValue().get(id);
+        if(relicsModel!=null){
+            return CommonReturnType.creat(relicsModel);
+        }
         try {
             relicsModel=relicsService.getRelicsById(id);
         }catch (Exception e){
@@ -69,6 +76,7 @@ public class RelicsController extends BaseController{
         if(relicsModel==null){
             throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"没有找到该文物信息");
         }
+        redisTemplate.opsForValue().set(id,relicsModel);
         return CommonReturnType.creat(relicsModel);
     }
     /**

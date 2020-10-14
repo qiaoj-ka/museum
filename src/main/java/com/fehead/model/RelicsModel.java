@@ -2,8 +2,10 @@ package com.fehead.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class RelicsModel {
+public class RelicsModel implements Serializable {
     private Integer id;
 
     /**
