@@ -3,6 +3,7 @@ package com.fehead.controller;
 
 import com.fehead.entity.Relics;
 import com.fehead.error.BusinessException;
+import com.fehead.model.RelicsModel;
 import com.fehead.response.CommonReturnType;
 import com.fehead.service.IRelicsService;
 import io.swagger.annotations.Api;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,9 +39,13 @@ public class RelicsController extends BaseController{
      */
     @GetMapping("/get/Relics")
     @ApiOperation("根据字段搜索文物详情")
-    @ApiImplicitParam(name = "field",value = "样品编号/原编号/文物名称")
-    public CommonReturnType getRelics(String field) throws BusinessException {
-        List<Relics> list=relicsService.getRelicsInfo(field);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "field",value = "样品编号/原编号/文物名称"),
+            @ApiImplicitParam(name = "page",value = "页数（默认一页10条数据）")
+    })
+
+    public CommonReturnType getRelics(String field,Integer page) throws BusinessException {
+        List<RelicsModel> list=relicsService.getRelicsInfo(field,page);
         return CommonReturnType.creat(list);
     }
 

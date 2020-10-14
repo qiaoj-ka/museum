@@ -3,6 +3,7 @@ package com.fehead.service;
 import com.fehead.entity.Relics;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fehead.error.BusinessException;
+import com.fehead.model.RelicsModel;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ import java.util.List;
  */
 public interface IRelicsService extends IService<Relics> {
     //根据字段搜索文物详情
-    List<Relics> getRelicsInfo(String field) throws BusinessException;
+    List<RelicsModel> getRelicsInfo(String field, Integer page) throws BusinessException;
 }

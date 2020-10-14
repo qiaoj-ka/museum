@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fehead.mapper.RelicsMapper">
 
+<select id="getRelicsInfo" resultType="com.fehead.model.RelicsModel">
+    select r.*,t.relics_type_name
+    from
+    (
+    select * from relics
+    where relics_id LIKE"%x%"
+    UNION
+    select * from relics
+    where relics_org_id LIKE"%x%"
+    UNION
+    select * from relics
+    where relics_name LIKE"%x%"
+    ) r,type_desc t
+    where r.relics_type=t.relics_type_id
+</select>
 </mapper>
