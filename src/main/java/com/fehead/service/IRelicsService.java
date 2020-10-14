@@ -12,5 +12,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-10-13
  */
 public interface IRelicsService extends IService<Relics> {
+    /**
+     * 插入数据
+     * @param relics
+     * @return
+     */
+    int insertData(Relics relics);
 
+    /**
+     * 查询数据是否存在
+     * @param relicsId
+     * @return
+     */
+    int selectRelicsById(String relicsId);
 }
