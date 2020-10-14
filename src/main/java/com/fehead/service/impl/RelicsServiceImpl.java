@@ -42,11 +42,16 @@ public class RelicsServiceImpl extends ServiceImpl<RelicsMapper, Relics> impleme
     }
 
     @Override
+    public RelicsModel getRelicsById(Integer id) {
+        return relicsMapper.getRelicsById(id);
+    }
+
+    @Override
     public List<RelicsModel> getRelicsInfo(String field,Integer page) throws BusinessException {
         List<RelicsModel> relics=new ArrayList<>();
         try {
             Page<RelicsModel> rpage=new Page<>(page,2);
-            IPage<RelicsModel> iPage=relicsMapper.getRelicsInfo(rpage);
+            IPage<RelicsModel> iPage=relicsMapper.getRelicsInfo(rpage,field);
             relics=iPage.getRecords();
         }catch (Exception e){
              throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR);

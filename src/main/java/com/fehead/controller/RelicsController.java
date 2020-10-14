@@ -56,6 +56,21 @@ public class RelicsController extends BaseController{
         return CommonReturnType.creat(list);
     }
 
+    @GetMapping("/getRelicsById")
+    @ApiOperation("根据id查找相应文物信息")
+    @ApiImplicitParam(name = "id",value = "这里的id指列表中返回的索引id，不是文物id")
+    public CommonReturnType selectRelicsInfo(Integer id) throws BusinessException {
+        RelicsModel relicsModel;
+        try {
+            relicsModel=relicsService.getRelicsById(id);
+        }catch (Exception e){
+             throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"查询失败");
+        }
+        if(relicsModel==null){
+            throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"没有找到该文物信息");
+        }
+        return CommonReturnType.creat(relicsModel);
+    }
     /**
      * 插入数据
      * @param relicsOrgId

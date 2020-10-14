@@ -20,5 +20,17 @@ import java.util.Map;
  */
 
 public interface RelicsMapper extends BaseMapper<Relics> {
-    IPage<RelicsModel> getRelicsInfo(Page<RelicsModel> rpage);
+    /**
+     * 通过模糊查询，查找对应的文物信息列表
+     * @param rpage
+     * @param field
+     * @return
+     */
+    IPage<RelicsModel> getRelicsInfo(Page<RelicsModel> rpage,String field);
+
+    /**
+     * 通过id查找某一个具体文物的详细信息
+     * @return
+     */
+    RelicsModel getRelicsById(Integer id);
 }
