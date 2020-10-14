@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 // 方法需要有ApiOperation注解才能生存接口文档
                 // .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 // 默认 api所在的package 都生成
-                .apis(RequestHandlerSelectors.basePackage("dome2.springcloud.domeparentrestservice1.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.fehead.controller"))
                 // 页面风格
                 .paths(PathSelectors.any())
                 // 运行并初始化相关内容
