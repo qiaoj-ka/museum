@@ -29,8 +29,18 @@ import java.util.Map;
 @Service
 public class RelicsServiceImpl extends ServiceImpl<RelicsMapper, Relics> implements IRelicsService {
 
-    @Autowired
-    private RelicsMapper relicsMapper;
+    @Autowired RelicsMapper relicsMapper;
+
+    @Override
+    public int insertData(Relics relics) {
+        return relicsMapper.insert(relics);
+    }
+
+    @Override
+    public int selectRelicsById(String relicsId) {
+        return relicsMapper.selectCount(new QueryWrapper<Relics>().eq("relics_id",relicsId));
+    }
+
     @Override
     public List<RelicsModel> getRelicsInfo(String field,Integer page) throws BusinessException {
         List<RelicsModel> relics=new ArrayList<>();

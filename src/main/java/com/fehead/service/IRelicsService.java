@@ -18,4 +18,17 @@ import java.util.List;
 public interface IRelicsService extends IService<Relics> {
     //根据字段搜索文物详情
     List<RelicsModel> getRelicsInfo(String field, Integer page) throws BusinessException;
+    /**
+     * 插入数据
+     * @param relics
+     * @return
+     */
+    int insertData(Relics relics);
+
+    /**
+     * 查询数据是否存在
+     * @param relicsId
+     * @return
+     */
+    int selectRelicsById(String relicsId);
 }
