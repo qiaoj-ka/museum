@@ -8,6 +8,7 @@ import com.fehead.response.CommonReturnType;
 import com.fehead.service.IRelicsService;
 import com.fehead.model.RelicsModel;
 import io.swagger.annotations.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,7 @@ public class RelicsController extends BaseController{
     @ApiOperation("根据字段搜索文物详情")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "field",value = "样品编号/原编号/文物名称"),
-            @ApiImplicitParam(name = "page",value = "页数（默认一页10条数据）")
+            @ApiImplicitParam(name = "page",value = "页数（默认一页10条数据）",paramType = "Integer")
     })
 
     public CommonReturnType getRelics(String field,Integer page) throws BusinessException {
@@ -62,7 +63,7 @@ public class RelicsController extends BaseController{
 
     @GetMapping("/getRelicsById")
     @ApiOperation("根据id查找相应文物信息")
-    @ApiImplicitParam(name = "id",value = "这里的id指列表中返回的索引id，不是文物id")
+    @ApiImplicitParam(name = "id",value = "这里的id指列表中返回的索引id，不是文物id",paramType = "Integer")
     public CommonReturnType selectRelicsInfo(Integer id) throws BusinessException {
         RelicsModel relicsModel=redisTemplate.opsForValue().get(id);
         if(relicsModel!=null){
@@ -105,7 +106,7 @@ public class RelicsController extends BaseController{
             @ApiImplicitParam(name = "relicsOrgId",value = "文物原编号"),
             @ApiImplicitParam(name = "relicsId",value = "文物编号"),
             @ApiImplicitParam(name = "relicsName",value = "文物名称"),
-            @ApiImplicitParam(name = "relicsType",value = "文物分类"),
+            @ApiImplicitParam(name = "relicsType",value = "文物分类",paramType = "Integer"),
             @ApiImplicitParam(name = "relicsBirthPlace",value = "文物出土地点"),
             @ApiImplicitParam(name = "relicsBirthTime",value = "文物出土时间"),
             @ApiImplicitParam(name = "relicsBurnTime",value = "文物烧造时间"),
