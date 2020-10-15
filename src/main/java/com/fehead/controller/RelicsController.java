@@ -192,12 +192,12 @@ public class RelicsController extends BaseController{
         if(relicsService.selectRelicsById(relicsId)!=0){ //如果存在就不能重复添加
             throw new BusinessException(EmBusinessError.DATA_INSERT_ERROR,"已存在数据,不能重复添加");
         }
-        String PicPath = "E:/museum/picture"; //本地图片路径
-        String FilePath = "E:/museum/file"; //本地文件路径
-        String ChemicalPath = "E:/museum/chemical"; //本地化学组成文件路径
-//        String PicPath = linuxPicPath;
-//        String FilePath = linuxFilePath;
-//        String ChemicalPath = linuxChemicalPath;
+//        String PicPath = "E:/museum/picture"; //本地图片路径
+//        String FilePath = "E:/museum/file"; //本地文件路径
+//        String ChemicalPath = "E:/museum/chemical"; //本地化学组成文件路径
+        String PicPath = linuxPicPath;
+        String FilePath = linuxFilePath;
+        String ChemicalPath = linuxChemicalPath;
         File dirp = new File(PicPath);
         File dirf = new File(FilePath);
         File dirc = new File(ChemicalPath);
