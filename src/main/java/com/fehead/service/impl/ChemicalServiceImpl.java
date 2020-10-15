@@ -4,6 +4,7 @@ import com.fehead.entity.Chemical;
 import com.fehead.mapper.ChemicalMapper;
 import com.fehead.service.IChemicalService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChemicalServiceImpl extends ServiceImpl<ChemicalMapper, Chemical> implements IChemicalService {
 
+    @Autowired
+    ChemicalMapper chemicalMapper;
+
+    @Override
+    public int insertData(Chemical chemical) {
+        return chemicalMapper.insert(chemical);
+    }
 }

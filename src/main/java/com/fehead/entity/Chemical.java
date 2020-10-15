@@ -24,7 +24,7 @@ public class Chemical implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer relicsId;
+    private String relicsId;
 
     @TableField("Na2O")
     private String Na2O;

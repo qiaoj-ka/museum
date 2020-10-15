@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-10-15
  */
 public interface IChemicalService extends IService<Chemical> {
-
+    int insertData(Chemical chemical);
 }
