@@ -36,9 +36,10 @@ import java.util.List;
 @RequestMapping("/fehead/relics")
 @Api(tags = "文物信息详情")
 public class RelicsController extends BaseController{
-    private static final String linuxPicPath = "/opt/museumData/picture";
-    private static final String linuxFilePath = "/opt/museumData/file";
-    private static final String linuxChemicalPath = "/opt/museumData/Chemical";
+    public static final String serverPath="http://47.92.196.104:8090";
+    private static final String linuxPicPath = "/opt/relicsPictures";
+    private static final String linuxFilePath = "/opt/relicsFile";
+    private static final String linuxChemicalPath = "/opt/relicsFile";
 
     @Autowired
     IRelicsService relicsService;
@@ -168,9 +169,9 @@ public class RelicsController extends BaseController{
         String picName = relicsId+"_pic" + "." + "jpg";
         String FileName =  relicsId+"_file"+relicsFilepath.getOriginalFilename().substring(relicsFilepath.getOriginalFilename().lastIndexOf("."));
         String ChemicalName = relicsId+"_chem"+relicsChemical.getOriginalFilename().substring(relicsChemical.getOriginalFilename().lastIndexOf("."));
-        String d = PicPath + "/" + picName;
-        String df = FilePath + "/" + FileName;
-        String dc = ChemicalPath + "/" + ChemicalName;
+        String d = serverPath + "/" + picName;
+        String df = serverPath + "/" + FileName;
+        String dc = serverPath + "/" + ChemicalName;
         File file = new File(PicPath, picName);
         File filef = new File(FilePath, FileName);
         File filec = new File(ChemicalPath, ChemicalName);
