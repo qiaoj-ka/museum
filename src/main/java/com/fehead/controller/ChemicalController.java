@@ -28,7 +28,7 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/fehead/chemical")
 @Api(tags = "文物化学成分")
-public class ChemicalController {
+public class ChemicalController extends BaseController{
 
     @Autowired
     private ExcelUtil excelUtil;

@@ -1,10 +1,14 @@
 package com.fehead.controller;
 
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.fehead.entity.Relics;
 import com.fehead.error.BusinessException;
 import com.fehead.error.EmBusinessError;
+import com.fehead.model.ChemicalModel;
+import com.fehead.model.RelicsModelData;
 import com.fehead.response.CommonReturnType;
+import com.fehead.service.IChemicalService;
 import com.fehead.service.IRelicsService;
 import com.fehead.model.RelicsModel;
 import io.swagger.annotations.*;
@@ -41,8 +45,12 @@ public class RelicsController extends BaseController{
     @Autowired
     IRelicsService relicsService;
 
+    @Autowired
+    IChemicalService chemicalService;
+
     @Resource
-    RedisTemplate<Integer,RelicsModel> redisTemplate;
+    RedisTemplate<String,RelicsModelData> redisTemplate;
+
     /**
      * 首页搜索，按照字段获取列表
      * @return
@@ -61,20 +69,54 @@ public class RelicsController extends BaseController{
     @ApiOperation("根据id查找相应文物信息")
     @ApiImplicitParam(name = "id",value = "这里的id指列表中返回的索引id，不是文物id",dataType = "int")
     public CommonReturnType selectRelicsInfo(Integer id) throws BusinessException {
-        RelicsModel relicsModel=redisTemplate.opsForValue().get(id);
-        if(relicsModel!=null){
-            return CommonReturnType.creat(relicsModel);
+        RelicsModelData relicsModelData=redisTemplate.opsForValue().get("relics"+id);
+        if(relicsModelData!=null){
+            return CommonReturnType.creat(relicsModelData);
         }
+        relicsModelData=new RelicsModelData();
+        RelicsModel relicsModel=getRelicsModel(id);
+        ChemicalModel chemicalModel=getChemicalModelByRelicsId(relicsModel.getRelicsId());
+        relicsModelData.setRelicsModel(relicsModel);
+        relicsModelData.setChemicalModel(chemicalModel);
+        redisTemplate.opsForValue().set("relics"+id,relicsModelData);
+        return CommonReturnType.creat(relicsModelData);
+    }
+
+    /**
+     * 通过文物唯一id获取其对应的化学成分
+     * @param id
+     * @return
+     */
+    public ChemicalModel getChemicalModelByRelicsId(String id) throws BusinessException {
+        //先从redis中查找
+        ChemicalModel chemicalModel;
+        try {
+            chemicalModel=chemicalService.getChemicalModelByRelicsId(id);
+        }catch (Exception e){
+            throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"文物化学元素查询失败");
+        }
+        if(chemicalModel==null){
+            throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"该文物未上传其化学元素");
+        }
+        return chemicalModel;
+    }
+
+    /**
+     * 获取文物详细数据
+     * @param id
+     * @return
+     */
+    public RelicsModel getRelicsModel(Integer id) throws BusinessException {
+        RelicsModel relicsModel;
         try {
             relicsModel=relicsService.getRelicsById(id);
         }catch (Exception e){
-             throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"查询失败");
+            throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"获取文物详细信息失败");
         }
         if(relicsModel==null){
             throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"没有找到该文物信息");
         }
-        redisTemplate.opsForValue().set(id,relicsModel);
-        return CommonReturnType.creat(relicsModel);
+        return relicsModel;
     }
     /**
      * 插入数据

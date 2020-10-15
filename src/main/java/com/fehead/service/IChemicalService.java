@@ -2,6 +2,7 @@ package com.fehead.service;
 
 import com.fehead.entity.Chemical;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fehead.model.ChemicalModel;
 
 /**
  * <p>
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-10-15
  */
 public interface IChemicalService extends IService<Chemical> {
-
+    ChemicalModel getChemicalModelByRelicsId(String id);
 }
