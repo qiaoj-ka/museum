@@ -65,7 +65,7 @@ public class RelicsController extends BaseController{
     @ApiOperation("根据字段搜索文物详情")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "field",value = "样品编号/原编号/文物名称"),
-            @ApiImplicitParam(name = "page",value = "页数（默认一页10条数据）",dataType = "int")
+            @ApiImplicitParam(name = "page",value = "页数（默认一页5条数据）",dataType = "int")
     })
     public CommonReturnType getRelics(String field,Integer page) throws BusinessException {
         List<RelicsModel> list=relicsService.getRelicsInfo(field,page);

@@ -50,7 +50,7 @@ public class RelicsServiceImpl extends ServiceImpl<RelicsMapper, Relics> impleme
     public List<RelicsModel> getRelicsInfo(String field,Integer page) throws BusinessException {
         List<RelicsModel> relics=new ArrayList<>();
         try {
-            Page<RelicsModel> rpage=new Page<>(page,2);
+            Page<RelicsModel> rpage=new Page<>(page,5);
             IPage<RelicsModel> iPage=relicsMapper.getRelicsInfo(rpage,field);
             relics=iPage.getRecords();
         }catch (Exception e){
