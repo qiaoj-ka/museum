@@ -13,5 +13,8 @@ import com.fehead.model.ChemicalModel;
  * @since 2020-10-15
  */
 public interface IChemicalService extends IService<Chemical> {
+
     ChemicalModel getChemicalModelByRelicsId(String id);
+
+    int insertData(Chemical chemical);
 }

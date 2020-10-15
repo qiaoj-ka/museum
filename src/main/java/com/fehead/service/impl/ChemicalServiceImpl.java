@@ -7,8 +7,8 @@ import com.fehead.mapper.ChemicalMapper;
 import com.fehead.model.ChemicalModel;
 import com.fehead.service.IChemicalService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,5 +33,10 @@ public class ChemicalServiceImpl extends ServiceImpl<ChemicalMapper, Chemical> i
         Chemical chemical=chemicalMapper.selectOne(queryWrapper);
         BeanUtils.copyProperties(chemical,chemicalModel);
         return chemicalModel;
+    }
+
+    @Override
+    public int insertData(Chemical chemical) {
+        return chemicalMapper.insert(chemical);
     }
 }
