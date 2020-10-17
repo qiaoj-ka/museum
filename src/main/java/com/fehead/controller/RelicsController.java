@@ -20,6 +20,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -160,6 +163,7 @@ public class RelicsController extends BaseController{
             @ApiImplicitParam(name = "relicsStorePlace",value = "文物存放单位"),
             @ApiImplicitParam(name = "relicsDesc",value = "文物描述"),
     })
+    @Transactional(isolation= Isolation.DEFAULT,propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
     public CommonReturnType uploadAllData(
             String relicsOrgId,
             String relicsId,
@@ -226,10 +230,33 @@ public class RelicsController extends BaseController{
             relicsFilepath.transferTo(filef);
             relicsChemical.transferTo(filec);
         }catch (Exception e){
-            throw new BusinessException(EmBusinessError.DATA_INSERT_ERROR);
+            if(file.exists()){
+                file.delete();
+            }
+            if(filec.exists()){
+                filec.delete();
+            }
+            if(filef.exists()){
+                filef.delete();
+            }
+            throw new BusinessException(EmBusinessError.DATA_ERROR,"文件生成错误");
         }
         //封装成完整化学成分对象
-        Chemical chemical = analyzeExcel(filec);
+        Chemical chemical=null;
+        try {
+            chemical = analyzeExcel(filec);
+        }catch (Exception e){
+            if(file.exists()){
+                file.delete();
+            }
+            if(filec.exists()){
+                filec.delete();
+            }
+            if(filef.exists()){
+                filef.delete();
+            }
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"化学组成文件格式错误");
+        }
         chemical.setRelicsId(relicsId);
         //封装成对象
         Relics relics=new Relics();
@@ -247,8 +274,22 @@ public class RelicsController extends BaseController{
         relics.setRelicsPicture(d);
         relics.setRelicsFilepath(df);
         relics.setRelicsChemical(dc);
-        int insert = relicsService.insertData(relics);
-        int insertData = chemicalService.insertData(chemical);
+        int insert=-1,insertData=-1;
+        try {
+            insert = relicsService.insertData(relics);
+            insertData = chemicalService.insertData(chemical);
+        }catch (Exception e){
+            if(file.exists()){
+                file.delete();
+            }
+            if(filec.exists()){
+                filec.delete();
+            }
+            if(filef.exists()){
+                filef.delete();
+            }
+            throw new BusinessException(EmBusinessError.DATA_INSERT_ERROR);
+        }
         return CommonReturnType.creat("插入状态:"+insert+" 插入化学表: "+insertData+" 图片路径:"+d+"  "+"文件路径:"+df+"  "+"化学文件路径:"+dc);
     }
 
