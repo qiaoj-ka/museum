@@ -1,5 +1,6 @@
 package com.fehead.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fehead.entity.Relics;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fehead.error.BusinessException;
@@ -26,7 +27,7 @@ public interface IRelicsService extends IService<Relics> {
      * @throws BusinessException
      */
 
-    List<RelicsModel> getRelicsInfo(String field, Integer page) throws BusinessException;
+    IPage<RelicsModel> getRelicsInfo(String field, Integer page) throws BusinessException;
     /**
      * 插入数据
      * @param relics

@@ -47,18 +47,13 @@ public class RelicsServiceImpl extends ServiceImpl<RelicsMapper, Relics> impleme
     }
 
     @Override
-    public List<RelicsModel> getRelicsInfo(String field,Integer page) throws BusinessException {
-        List<RelicsModel> relics=new ArrayList<>();
+    public IPage<RelicsModel> getRelicsInfo(String field,Integer page) throws BusinessException {
         try {
             Page<RelicsModel> rpage=new Page<>(page,5);
             IPage<RelicsModel> iPage=relicsMapper.getRelicsInfo(rpage,field);
-            relics=iPage.getRecords();
+            return iPage;
         }catch (Exception e){
              throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR);
         }
-        if(relics.isEmpty()){
-            throw new BusinessException(EmBusinessError.DATA_SELECT_ERROR,"查询结果为空");
-        }
-        return relics;
     }
 }

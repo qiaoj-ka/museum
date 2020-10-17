@@ -1,6 +1,7 @@
 package com.fehead.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fehead.entity.Chemical;
 import com.fehead.entity.Relics;
 import com.fehead.error.BusinessException;
@@ -68,8 +69,8 @@ public class RelicsController extends BaseController{
             @ApiImplicitParam(name = "page",value = "页数（默认一页5条数据）",dataType = "int")
     })
     public CommonReturnType getRelics(String field,Integer page) throws BusinessException {
-        List<RelicsModel> list=relicsService.getRelicsInfo(field,page);
-        return CommonReturnType.creat(list);
+        IPage<RelicsModel> list=relicsService.getRelicsInfo(field,page);
+        return CommonReturnType.creat(list.getRecords(),list.getPages());
     }
     @GetMapping("/getRelicsById")
     @ApiOperation("根据id查找相应文物信息")
